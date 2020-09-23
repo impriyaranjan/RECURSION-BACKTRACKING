@@ -1,0 +1,31 @@
+public class NQueenBranchAndBound
+{
+     public static void main(String []args)
+     { int n=6;
+       boolean[][] board=new boolean[n][n];
+       boolean[] cols=new boolean[n];
+       boolean[] ndiagonal=new boolean[2*n-1];     //No of possible diagonal=(2*n -1);
+       boolean[] rdiagonal=new boolean[2*n-1];
+       solveNQueen(board,0,cols,ndiagonal,rdiagonal,"");
+     }
+     static void solveNQueen(boolean[][] board,int row,boolean[] cols,boolean[] ndiagonal,
+                                   boolean[] rdiagonal,String ans)
+    {  if(row==board.length)            //Base Case; --> while exit out from last row;
+       {   System.out.println("{"+ans+"}");
+           return;
+       }
+      for(int col=0;col<board[0].length;col++)
+        { if(cols[col]==false && ndiagonal[row+col]==false && rdiagonal[row-col+board.length-1]==false)
+          { board[row][col]=true;            //fill Queen and update col,ndiagonal,rdiagonal=true
+            cols[col]=true;                 // for blocking;
+            ndiagonal[row+col]=true;
+            rdiagonal[row-col+board.length-1]=true;
+          solveNQueen(board,row+1,cols,ndiagonal,rdiagonal,ans+"("+row+","+col+"),");
+            board[row][col]=false;            //starts BackTracking;
+            cols[col]=false;
+            ndiagonal[row+col]=false;
+            rdiagonal[row-col+board.length-1]=false;
+          }  
+        }
+    }
+}
