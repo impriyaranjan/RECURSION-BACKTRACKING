@@ -2,7 +2,7 @@ public class SolveSudoku
 {
  public static void main(String[] args)
  {   int[][] arr=new int[9][9];
-     String[] str={"306508400","520000000","087000031","003010080","900863005","050090600",
+      String[] str={"306508400","520000000","087000031","003010080","900863005","050090600",
                     "130000250","000000074","005206300"};
     for(int i=0;i<9;i++)
         {   for(int j=0;j<9;j++)
@@ -11,17 +11,24 @@ public class SolveSudoku
     display(arr);
     System.out.println("------------------Ans----------------------");
     solveSudoku(arr,0,0);
-    }
-    static void display(int[][] matrix)
+}
+
+  public static void display(int[][] matrix)
     { for(int i=0;i < matrix.length ;i++)
-      { for(int j=0;j< matrix[0].length ;j++)
-        {   System.out.print(matrix[i][j]+" ");
+      { if(i==0||i==3||i==6)
+            System.out.println("-----------------------");
+        for(int j=0;j< matrix[0].length ;j++)
+        {    if(j==0||j==3||j==6)
+                System.out.print("|");
+            System.out.print(matrix[i][j]+" ");
         }
+        System.out.print("|");
         System.out.println();  
       }
- }
+    }
+
  static void solveSudoku(int[][] matrix,int row,int col)
- {  if(row==matrix.length)           //base case: last row matrix se bahar chala jaye.
+ {  if(row==matrix.length)      //base case: last row matrix se bahar chala jaye.
     { display(matrix);
        return;
     }
@@ -48,8 +55,9 @@ public class SolveSudoku
     }
         
  }
+
  static boolean isValidInput(int[][] matrix,int x,int y,int val)
- { for(int j=0;j<matrix[0].length;j++)     //check in rows. col will increase.
+  { for(int j=0;j<matrix[0].length;j++)     //check in rows. col will increase.
    { if(matrix[x][j]==val)
         return false;
    }
@@ -57,7 +65,7 @@ public class SolveSudoku
    { if(matrix[i][y]==val)
         return false;
    }
-   int smi=x/3*3;
+   int smi=x/3*3;     
    int smj=y/3*3;    //formula to reach every corresponding top-left corner of submatrix.
    for(int i=0;i<3;i++)
     { for(int j=0;j<3;j++)
@@ -66,7 +74,7 @@ public class SolveSudoku
       }
     }
      return true;
- }
+  }
 }
 
 /*
