@@ -1,0 +1,42 @@
+import java.util.*;
+import java.io.*;
+public class MaxScoreOfWord
+{
+    public static void main(String []args)
+   {  String[] words={"dog","cat","dad","good"};
+      char[] letters={'a','b','c','d','d','d','g','o','o'};
+     int[] score={1,0,9,5,0,0,3,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0};
+     if(words==null||words.length==0||letters==null||letters.length==0||score==null||score.length==0)
+     {   System.out.println(0);
+         return;
+     }
+     int[] farr=new int[score.length];
+        for(char ch :letters)
+            farr[ch-'a']++;
+      System.out.println(solution(words,farr,score,0));
+   }
+   static int solution(String[] words,int[] farr,int[] score,int index)
+   {   if(index==words.length)
+            return 0;
+       int s_no=0+solution(words,farr,score,index+1);  // not taking word & skipped to another word;
+       //word to include
+       int sword=0;               //initial score of word=0;
+       String word=words[index];
+       boolean flag=true;         //if yes(taking word)  call is made;
+       for(int i=0;i<word.length();i++)  //find out score of a word by every letter iteration;
+        {    char ch=word.charAt(i);
+             if(farr[ch-'a']==0)         //to skip the word whose letter frequency is not valid;
+                flag=false;
+            farr[ch-'a']--;          //decrease frequency of that letter by 1;
+            sword+=score[ch-'a'] ;    //add corresponding score of letter from score[];
+        }
+        int s_yes=0;
+        if(flag)                //for valid word
+            s_yes=sword+solution(words,farr,score,index+1);
+        for(int i=0;i<word.length();i++)                //for backtracking(loop came after call);
+        {   char ch=word.charAt(i);
+            farr[ch-'a']++;
+        }
+        return Math.max(s_no,s_yes);       
+   }   
+}
