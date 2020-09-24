@@ -1,0 +1,18 @@
+import java.util.*;
+import java.io.*;
+public class LexicalOrder             //In Dictionary order;
+{
+    public static void main(String []args)
+   {   int n=200;
+       for(int i=1;i<=9;i++)            //Horizontal(Breadth Wise) loop/call 0-->9.
+            depthFirstSearch(i,n);
+   }
+   static int depthFirstSearch(int i,int n)    //Depth Wise-->Family Call.   
+   {   if(i>n)
+            return 1;
+       System.out.println(i);
+       for(int j=0;j<10;j++)
+            depthFirstSearch(10*i+j,n);
+        return 1;
+   }
+}
