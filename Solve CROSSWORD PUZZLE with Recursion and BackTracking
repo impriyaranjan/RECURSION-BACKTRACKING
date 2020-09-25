@@ -1,0 +1,122 @@
+public class SolveCrosswordPuzzle
+{  
+  public static void main(String []args){
+    int m=10;
+    int n=10;    
+    char[][] matrix=new char[m][n];
+  /* 
+    String[] str={"101","000","101"};          int m=3; int n=3;
+    String[] words={"AND","ANT"};
+  */
+    String[] str={"1011111111","1011111111","1011111111","1000001111","1011101111","1011101111","1111101111","1100000011","1111101111","1111101111"};
+    String[] words={"DELHI","ICELAND","ANKARA","LONDON"};
+    for(int i=0;i<matrix.length;i++)
+    {  for(int j=0;j<matrix[0].length;j++)
+            matrix[i][j]=str[i].charAt(j);
+    }    
+   solveCrosswordPuzzle(matrix,words,0);
+  }
+
+ static void print(char[][] matrix){ 
+    for(int i=0;i<matrix.length;i++)
+    {  for(int j=0;j<matrix[0].length;j++)
+            System.out.print(matrix[i][j]+" ");
+        System.out.println();
+    }
+    System.out.print("-----------------------");
+    System.out.println();
+  }
+
+ static void solveCrosswordPuzzle(char[][] matrix,String[] words,int widx){
+    if(widx==words.length)
+    {    print(matrix);
+        return;
+    }
+    String word=words[widx];
+    for(int i=0;i<matrix.length;i++)
+    {  for(int j=0;j<matrix[0].length;j++)
+       { if(matrix[i][j]=='0'||matrix[i][j]==word.charAt(0))
+         {  if(canPlaceWordHorizontally(matrix,word,i,j))
+           { boolean[] wePlaced=placeWordHorizontally(matrix,word,i,j);
+             solveCrosswordPuzzle(matrix,words,widx+1);
+             unplaceWordHorizontally(matrix,wePlaced,i,j);
+           }
+           if(canPlaceWordVertically(matrix,word,i,j))
+          { boolean[] wePlaced=placeWordVertically(matrix,word,i,j);
+            solveCrosswordPuzzle(matrix,words,widx+1);
+            unplaceWordVertically(matrix,wePlaced,i,j);
+          }
+         }  
+       }
+    }
+  }
+
+ static boolean canPlaceWordHorizontally(char[][] matrix,String word,int i,int j){
+  if(j-1 >= 0 && matrix[i][j-1] != '1')         //check left border of matrix   0 0 1
+        return false;
+    else if(j+word.length()<matrix[0].length && matrix[i][j+word.length()]!='1')
+        return false;
+  for(int jj=0;jj<word.length();jj++)      //for whole word;
+  {  if(j+jj>=matrix[0].length)          //at that moment when word length crosses wall;
+         return false;
+    if(matrix[i][j+jj]=='0'||matrix[i][j+jj]==word.charAt(jj)) //found '0' or similar letter
+        continue;                                              //  from another word
+    else
+        return false;
+  }
+  return true;
+ }
+
+ static boolean canPlaceWordVertically(char[][] matrix,String word,int i,int j){
+   if(i-1>=0 && matrix[i-1][j]!='1')         //check left border of matrix   0 0 1
+        return false;
+    else if(i+word.length()<matrix.length && matrix[i+word.length()][j]!='1')
+        return false;
+  
+  for(int ii=0;ii<word.length();ii++)      //for whole word;
+  {  if(i+ii>=matrix.length)          //at that moment when word length crosses wall;
+         return false;
+    if(matrix[i+ii][j]=='0'||matrix[i+ii][j]==word.charAt(ii)) //found '0' or similar letter
+        continue;                                              //  from another word
+    else
+        return false;
+  }
+  return true;
+ }
+
+ static boolean[] placeWordHorizontally(char[][] matrix,String word,int i,int j){
+    boolean[] wePlaced=new boolean[word.length()];
+    for(int jj=0;jj<word.length();jj++)              //loop for every letters in a word;
+    {   if(matrix[i][j+jj]=='0')
+        {   matrix[i][j+jj]=word.charAt(jj);
+            wePlaced[jj]=true;
+        }
+    }
+    return wePlaced;
+ }
+
+ static boolean[] placeWordVertically(char[][] matrix,String word,int i,int j){
+    boolean[] wePlaced=new boolean[word.length()];
+    for(int ii=0;ii<word.length();ii++)              //loop for every letters in a word;
+    {   if(matrix[i+ii][j]=='0')
+        {   matrix[i+ii][j]=word.charAt(ii);
+            wePlaced[ii]=true;
+        }
+    }
+    return wePlaced;
+ }
+
+ static void unplaceWordHorizontally(char[][] matrix,boolean[] wePlaced,int i,int j){
+    for(int jj=0;jj<wePlaced.length;jj++)     //loops for letters that is not common;
+    {   if(wePlaced[jj]==true)
+            matrix[i][j+jj]='0';    
+    }
+ }
+
+ static void unplaceWordVertically(char[][] matrix,boolean[] wePlaced,int i,int j){
+    for(int ii=0;ii<wePlaced.length;ii++)     //loops for letters that is not common;
+    {   if(wePlaced[ii]==true)
+            matrix[i+ii][j]='0';    
+    }
+ }
+}
