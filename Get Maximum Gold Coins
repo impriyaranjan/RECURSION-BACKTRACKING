@@ -1,0 +1,44 @@
+import java.util.ArrayList;
+public class GetMaxGold
+{  static int max=0;
+  
+    public static void main(String []args)
+  { int m=7;
+    int n=7;    //int[][] matrix=new int[m][n];
+    int[][] matrix={{10,0,100,200,0,8,0},{20,0,0,0,0,6,0},{30,0,0,9,12,3,4},{40,0,2,300,8,3,11},{0,0,0,0,0,9,0},{5,6,7,0,7,4,2},{8,9,10,0,1,10,8}};
+    getMaxGold(matrix);
+    System.out.println(max);
+  }
+  static void getMaxGold(int[][] matrix)
+  { boolean[][] visited=new boolean[matrix.length][matrix[0].length];
+     
+    for(int i=0;i<matrix.length;i++)
+    { for(int j=0;j<matrix[i].length;j++)
+      { if(matrix[i][j]!=0 && visited[i][j]==false)
+        {  ArrayList<Integer> bag=new ArrayList<>();
+          travelAndCollectGold(matrix,i,j,visited,bag);
+        
+            int sum=0;
+            for(int val:bag)
+               sum+=val;  
+            if(sum>max)
+               max=sum;
+        }
+      }
+    }
+  }
+  static void travelAndCollectGold(int[][] matrix,int i,int j,boolean[][] visited,
+                                                      ArrayList<Integer> bag)
+  { if(i<0 || j<0 ||i>=matrix.length ||j>=matrix[0].length ||matrix[i][j]==0|| visited[i][j]==true)
+    {
+        return;
+    }
+    visited[i][j]=true;
+    bag.add(matrix[i][j]);
+    travelAndCollectGold(matrix,i-1,j,visited,bag);  //North
+    travelAndCollectGold(matrix,i,j+1,visited,bag);  //East
+    travelAndCollectGold(matrix,i,j-1,visited,bag);    //West
+    travelAndCollectGold(matrix,i+1,j,visited,bag);    //South;
+      
+  }
+}
