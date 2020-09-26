@@ -1,0 +1,68 @@
+import java.util.HashMap;
+public class CryptAirthmetic
+{ 
+  public static void main(String[] args){
+    String[] str={"SEND","MOSY","NEAT","SNSDO"};    //input string[].
+    
+    HashMap<Character,Integer> charIntMap =new HashMap<>();
+    String unique="";
+    for(int i=0;i<str.length;i++)
+    { for(int j=0;j<str[i].length();j++)
+      {if(!charIntMap.containsKey(str[i].charAt(j)))
+        { charIntMap.put(str[i].charAt(j),-1);
+           unique +=str[i].charAt(j);
+        }
+       }
+    }
+    boolean[] usedNumbers=new boolean[10];  //store [0-->9]
+    cryptAirthmetic(unique,0,charIntMap,usedNumbers,str);
+    }
+
+  static void cryptAirthmetic(String unique,int unqindex,HashMap<Character,Integer> charIntMap,boolean[] usedNumbers,String[] str){
+      
+    if(unqindex==unique.length())
+    {  
+      int[] num=new int[str.length];
+      int sum=0;
+      for(int i=0;i<str.length;i++)
+        num[i]=getNum(str[i],charIntMap);
+      for(int i=0;i<str.length-1;i++)
+        sum+=num[i];
+      if(sum==num[str.length-1])
+      { for(int i=0;i<unique.length();i++)
+            System.out.print("("+unique.charAt(i)+"->"+charIntMap.get(unique.charAt(i))+"),");
+        System.out.println(); 
+      } return;
+    }
+     
+  /*    if(num1+num2==num3)       //print in Alphabetical order(Base Case)
+      { for(int i=0;i<unique.length();i++)
+            System.out.print("("+unique.charAt(i)+"->"+charIntMap.get(unique.charAt(i))+"),");
+        for(int i=0;i<26;i++)
+        { char ch=(char)('a'+i);
+          if(charIntMap.containsKey(ch))
+            {    System.out.print("("+ch+"->"+charIntMap.get(ch)+"),");}
+        }
+        System.out.println();
+      }
+      return;
+    }  */
+    char ch=unique.charAt(unqindex);
+    for(int num=0;num<=9;num++)
+    { if(usedNumbers[num]==false)
+      { charIntMap.put(ch,num);
+        usedNumbers[num]=true;
+        cryptAirthmetic(unique,unqindex+1,charIntMap,usedNumbers,str);
+        usedNumbers[num]=false;
+        charIntMap.put(ch,-1);
+      }
+    }
+  }
+  static int getNum(String s,HashMap<Character,Integer> charIntMap){
+    String num="";
+    for(int i=0;i<s.length();i++)
+        num+=charIntMap.get(s.charAt(i));
+    return Integer.parseInt(num);           //2nd opt: String.valueOf(num);
+  }  
+
+}
