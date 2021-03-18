@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+public class FriendsPairing{
+    
+    static int counter=1;
+    
+    public static void main(String []args){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        boolean[] used = new boolean[n+1];
+        solution(1,n,used,"");
+    }
+     
+    public static void solution(int i,int n,boolean[] used,String asf)
+    {
+        //Base Case For printing result;
+        if(i>n)
+        {   System.out.println(counter+"."+asf);
+            counter++;
+            return;
+        }
+        //Main case
+        if(used[i]==true)
+        {
+            solution(i+1,n,used,asf);
+        }else{
+            used[i]=true;
+            solution(i+1,n,used,asf+"("+i+")");
+            for(int j=i+1;j<=n;j++)
+            {  if(used[j]==false)
+                {  used[j]=true;
+                   solution(i+1,n,used,asf+"("+i+j+")");
+                   used[j]=false;
+                }
+            }
+            used[i]=false;
+        }
+    }
+}
+
+ANSWER:
+Output (for input=3)
+1.(1)(2)(3)
+2.(1)(23)
+3.(12)(3)
+4.(13)(2)
